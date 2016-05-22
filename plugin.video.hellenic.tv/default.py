@@ -2,7 +2,7 @@
 
 '''
     Hellenic TV Add-on
-    Copyright (C) 2015 lambda
+    Copyright (C) 2016 lambda
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ movieImage          = os.path.join(addonArt,'image_movie.jpg')
 tvImage             = os.path.join(addonArt,'image_tv.jpg')
 episodeImage        = os.path.join(addonArt,'image_episode.jpg')
 musicImage          = os.path.join(addonArt,'image_music.jpg')
-addonChannels       = 'http://olympia.watchkodi.com/hellenic-tv/channels.xml'
+addonChannels       = os.path.join(addonPath,'channels.xml')
 addonCartoons       = 'http://olympia.watchkodi.com/hellenic-tv/cartoons.xml'
 addonSettings       = os.path.join(dataPath,'settings.db')
 addonCache          = os.path.join(dataPath,'cache.db')
@@ -1266,7 +1266,7 @@ class channels:
     def __init__(self):
         self.list = []
 
-        self.channelMap = {'MEGA':'10', 'ANT1':'7', 'ALPHA':'5', 'STAR':'12', 'SKAI':'11', 'MACEDONIA TV':'8', 'NERIT':'4', 'NERIT PLUS':'352', 'RIK SAT':'83', 'BLUE SKY':'200', 'E TV':'326', 'EXTRA CHANNEL':'191', 'CHANNEL 9':'199', 'KONTRA CHANNEL':'194', 'ART CHANNEL':'248', 'AB CHANNEL':'249', 'TV 100':'229', 'DELTA TV':'236', 'DIKTYO TV':'235', 'STAR CENTRAL GR':'230', 'ALFA TV':'372', 'ATTICA TV':'190', 'BEST TV':'332', 'IONIAN CHANNEL':'360', 'SUPER B':'368', 'COSMOS TV':'370', 'KANALI 6':'377', 'R CHANNEL':'380', 'THRAKI NET':'382', 'ASTRA TV':'400', 'ACTION24':'189', 'BOYLH TV':'1', 'SBC':'228', 'NICKELODEON':'193', 'MAD TV':'9', 'MTV GREECE':'138', '4E':'222', 'TV AIGAIO':'330', 'CORFU TV':'331', 'KRITI TV':'227', 'EPIRUS TV1':'234', 'KOSMOS':'334', 'EURONEWS':'119', 'MEGA CYPRUS':'306', 'ANT1 CYPRUS':'258', 'SIGMA':'305', 'PLUS TV':'289', 'EXTRA TV':'290', 'CAPITAL':'282', 'RIK 1':'274', 'RIK 2':'277'}
+        self.channelMap = {'MEGA':'10', 'ANT1':'7', 'ALPHA':'5', 'STAR':'12', 'SKAI':'11', 'MACEDONIA TV':'8', 'RIK SAT':'83', 'BLUE SKY':'200', 'E TV':'326', 'EXTRA CHANNEL':'191', 'CHANNEL 9':'199', 'KONTRA CHANNEL':'194', 'ART CHANNEL':'248', 'AB CHANNEL':'249', 'TV 100':'229', 'DELTA TV':'236', 'DIKTYO TV':'235', 'STAR CENTRAL GR':'230', 'ALFA TV':'372', 'ATTICA TV':'190', 'BEST TV':'332', 'IONIAN CHANNEL':'360', 'SUPER B':'368', 'COSMOS TV':'370', 'KANALI 6':'377', 'R CHANNEL':'380', 'THRAKI NET':'382', 'ASTRA TV':'400', 'ACTION24':'189', 'BOYLH TV':'1', 'SBC':'228', 'NICKELODEON':'193', 'MAD TV':'9', 'MTV GREECE':'138', '4E':'222', 'TV AIGAIO':'330', 'CORFU TV':'331', 'KRITI TV':'227', 'EPIRUS TV1':'234', 'KOSMOS':'334', 'EURONEWS':'119', 'MEGA CYPRUS':'306', 'ANT1 CYPRUS':'258', 'SIGMA':'305', 'PLUS TV':'289', 'EXTRA TV':'290', 'CAPITAL':'282', 'RIK 1':'274', 'RIK 2':'277'}
 
         self.entertainmentMap = ['ET3', 'CAPITAL']
         self.movieMap = ['GREEK CINEMA 50s', 'GREEK CINEMA 60s', 'GREEK CINEMA 70s', 'GREEK CINEMA 80s', 'GREEK CINEMA']
@@ -1287,8 +1287,9 @@ class channels:
 
     def channel_list(self):
         try:
-            result = getUrl(addonChannels).result
-            channels = common.parseDOM(result, "channel", attrs = { "active": "True" })
+            f = open(addonChannels, 'r')
+            addonChannelsString = f.read().replace('\n', '')
+            channels = common.parseDOM(addonChannelsString, "channel", attrs = { "active": "True" })
         except:
             return
 
